@@ -1,9 +1,9 @@
-// Modules to control application life and create native browser window
+//Load modules and declare variables
 const { app, BrowserWindow, dialog } = require('electron')
 const ipc = require('electron').ipcMain
 const path = require('path');
 const fs = require('fs');
-var validTypes = ['txt','json','js','sh','py','html','php', 'css', 'bat', 'dat', 'csv', 'xml', 'log', 'db', 'pl', 'cgi', 'htm', 'jsp', 'asp', 'aspx', 'xhtml', 'odt', 'doc', 'docx', 'obs', 'pps', 'cpp', 'vb', 'swift', 'h', 'c', 'class', 'ods', 'xls', 'cfg', 'dll', 'lnk', 'ini', 'rtf', 'tex', 'yml', 'yaml', 'ts', 'msi', 'desktop'];
+const validTypes = ['txt','json','js','sh','py','html','php', 'css', 'bat', 'dat', 'csv', 'xml', 'log', 'db', 'pl', 'cgi', 'htm', 'jsp', 'asp', 'aspx', 'xhtml', 'odt', 'doc', 'docx', 'obs', 'pps', 'cpp', 'vb', 'swift', 'h', 'c', 'class', 'ods', 'xls', 'cfg', 'dll', 'lnk', 'ini', 'rtf', 'tex', 'yml', 'yaml', 'ts', 'msi', 'desktop'];
 var filePath = ''
 var fileType
 var allowFile
@@ -44,48 +44,54 @@ function createWindow () {
 app.on('ready', () => {
   createWindow()
   mainWindow.loadFile('index.html')
-  //Load the config file and send the data to renderer.js
-
-  //Start checking for unsaved files
-  mainWindow.webContents.once('dom-ready', () => {mainWindow.webContents.send('startCheckSave', '')});
+  //Require the main menu
+  require('./assets/menu/menu.js')
 })
 
 //IPC communications
 ipc.on('open-file', function (event, arg) {
   //Run the code to open the file
   openFile()
-  if(filePath == 'undefined') {
-
-  } else {
+  //Get the filetype and check it against an array of allowed files
+  fileType = filePath.substr(filePath.indexOf(".") + 1)
+  allowFile = 0
+  for (i = 0; i < validTypes.length; i++) {
+    if(fileType == validTypes[i]) {
+      allowFile = 1
+    }
+  }
+  if(filePath == 'undefined') {} else {
   if(allowFile == 1) {
     fs.readFile(filePath, function(err, data) {
       mainWindow.webContents.send('open-file', filePath, data);
     });
   } else {
-      forceLoad('Unsupported filetype.\n Please submit an issue on GitHub if you belive this is an error.\n Press OK to load anyway.')
+      forceLoad('Unsupported filetype.\n Please submit an issue on GitHub if you belive this is an error.\n (Help > GitHub)\n Press OK to load anyway.')
     }
   }
 })
 
-ipc.on('save-file', function (event, saveData) {
+ipc.on('save-file', function (event, saveData, saveAs) {
   //Run the code to save the edited file
   //Find a place to save it if it has no path
-  if(filePath == '' || filePath == 'undefined') {
-    filePath = String(dialog.showOpenDialog({
-      title: 'Open File',
-      properties: ['openFile']
-    }))
-    if(filePath == '' || filePath == 'undefined') {
-      //Send an error if it still has no path
-      sendMessage("Error while saving the file")
-    } else {
+  if(saveAs == 1) {
+    openFile()
+    if(filePath == '' || filePath == 'undefined') {} else {
       mainWindow.webContents.send('confirm', 'Are you sure you want to save?\nWarning: This will overwrite the chosen file.')
       publicSaveData = saveData
     }
   } else {
-    //Save the file normally
-    writeFileData(filePath, saveData)
-  }
+    if(filePath == '' || filePath == 'undefined') {
+      openFile()
+      if(filePath == '' || filePath == 'undefined') {} else {
+        mainWindow.webContents.send('confirm', 'Are you sure you want to save?\nWarning: This will overwrite the chosen file.')
+        publicSaveData = saveData
+      }
+    } else {
+      //Save the file normally
+      writeFileData(filePath, saveData)
+    }
+}
 })
 
 ipc.on('confirmLoad', function (event, data) {
@@ -113,35 +119,24 @@ ipc.on('confirm', function (event, data) {
 })
 
 //Selects file and saves the contents
-function openFile () {
+function openFile() {
   filePath = 'undefined'
   filePath = String(dialog.showOpenDialog({
     title: 'Open File',
     properties: ['openFile']
   }))
-  //Get the filetype and check it against an array of allowed files
-  fileType = filePath.substr(filePath.indexOf(".") + 1)
-  allowFile = 0
-  for (i = 0; i < validTypes.length; i++) {
-    if(fileType == validTypes[i]) {
-      allowFile = 1
-    }
-  }
 }
 
 function writeFileData(path, writeContents) {
   fs.writeFile(path, writeContents, function (err) {
     if(err) throw err;
     sendMessage('File saved successfully')
+    mainWindow.webContents.send('update-contents', '')
   });
 }
 
 function sendMessage (content) {
   mainWindow.webContents.send('messages', content);
-}
-
-function sendConfirmURL (content, url) {
-  mainWindow.webContents.send('confirmURL', content, url);
 }
 
 function forceLoad (content) {

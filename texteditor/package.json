@@ -1,12 +1,14 @@
 {
   "name": "mollusc-text-editor",
-  "productName": "mollusc-text-editor",
+  "productName": "Mollusc Text Editor",
   "description": "An Electron based text editor",
   "keywords": [],
   "main": "./main.js",
-  "version": "0.2.1",
+  "version": "0.3.8",
+  "license" : "GPL-3.0",
+  "homepage": "https://dragon8oy.github.io/electron",
   "author": {
-    "name": "ratus5",
+    "name": "dragon8oy",
     "email": "stuart.a.hayhurst@gmail.com"
   },
   "repository": {
@@ -22,23 +24,23 @@
   "build": {
     "files": [
       "**/*",
+      "assets/css/stylesheet.css",
       "assets/img/*",
-      "assets/settings.cfg"
+      "assets/menu/menu.js"
     ],
     "win": {
       "target": "NSIS",
       "icon": "build/icon.ico"
     },
     "linux": {
-      "icon": "build/icon.png",
+      "icon": "build/icons/512x512.png",
       "target": [
-        "AppImage",
-        "deb",
-        "apk"
+        "AppImage"
       ]
     }
   },
-  "dependencies": {},
+  "dependencies": {
+  },
   "devDependencies": {
     "electron": "^4.0.5",
     "electron-builder": "^20.38.5"
