@@ -1,116 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Mollusc Text Editor</title>
+    <link href="assets/css/stylesheet.css" rel="stylesheet">
+  </head>
+  <body>
+    &nbsp<a id="searchMenu" class="searchMenu" ><p style="display: inline-block;" >Search for text:</p>&nbsp<input style="display: inline-block;" id="searchBox" ></input> <button id="searchBtn" class="searchBtn" style="display: inline-block;" onClick="findText('')" >Search</button></a>
+    &nbsp<a class="buttonGroup"><button class="button" onClick="openFile()">Open File</button>
+    <button class="button" onClick="saveFile()">Save File</button></a><br>
+    <br><textarea contenteditable="true" oninput="checkSave()" id="workspace" class="workspace">No file loaded</textarea>
 
-<head>
-    <meta charset="utf-8">
-    <!--meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"-->
-    <meta name="description" content="An internal page to host projects">
-    <meta name="author" content="Dragon8oy">
-    <link rel="shortcut icon" href="html/media/favicon.ico">
-    <title>Projects</title>
-    <link href="html/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="html/css/stylesheet.css" type="text/css" rel="stylesheet">
-    <link href="html/css/simple-sidebar.css" rel="stylesheet">
-</head>
-
-<body>
-<div class="topbar">
-<img href="#inner-menu-toggle" onclick="reset_animation()" id="inner-menu-toggle" class="lines"  src="html/media/lines.png"/>
-<img id="banner" src="html/media/banner.png" class="bannerImage"/>
-</div>
-    <div id="wrapper">
-        <!-- Sidebar -->
-        <div id="sidebar-wrapper">
-            <ul class="sidebar-nav">
-                <li class="sidebar-brand">
-                    <a href="index.html">
-                        Home
-                    </a>
-                </li>
-                <li>
-                    <a href="#Downloads" onclick="openPage('html/downloads.html')">Downloads</a>
-                </li>
-                <li>
-                    <a href="#Help" onclick="openPage('html/help.html')">Help</a>
-                </li>
-                <li>
-                    <a href="https://github.com/Dragon8oy/electron" target="_blank">GitHub</a>
-                </li>
-            </ul>
-        </div>
-        <!-- /#sidebar-wrapper -->
-
-        <!-- Page Content -->
-        <div id="page-content-wrapper">
-            <div class="container-fluid" style="margin-top: 4.7%;">
-	    <object height="1000" class="content-area" data="html/home.html" id="content-area"></object>
-            </div>
-        </div>
-        <!-- /#page-content-wrapper -->
-
-    </div>
-    <!-- /#wrapper -->
-
-    <!-- Bootstrap core JavaScript -->
-    <script src="html/vendor/jquery/jquery.min.js"></script>
-    <script src="html/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Menu Toggle Script -->
+    <script src="./renderer.js"></script>
     <script>
-    $("#menu-toggle").click(function(e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
-    });
+      var nodeVer = process.versions.node;
+      var chromeVer = process.versions.chrome;
+      var electronVer = process.versions.electron;
+      var text
+      function displayVer() {
+        window.alert('Node: ' + nodeVer + '\n' + 'Chrome: ' + chromeVer + '\n' + 'Electron: ' + electronVer)
+      }
+      function openLink(url) {
+        window.location.href=url;
+      }
+      function findText(text) {
+        if(text == '') {
+          text = document.getElementById('searchBox').value;
+        }
+        if(window.find(text)) {
+        } else {
+          window.alert('No text found matching the search')
+        }
+      }
     </script>
-    <script>
-    $("#inner-menu-toggle").click(function(e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
-    });
-    </script>
-<script>
-$("#wrapper").toggleClass("toggled");
-function reset_animation() {
-  var el = document.getElementById('inner-menu-toggle');
-  el.style.animation = 'none';
-  el.offsetHeight; /* trigger reflow */
-  el.style.animation = null; 
-}
-function openPage(page) {
-    var objTag = document.getElementById("content-area");
-    objTag.setAttribute('data', page);
-}
-if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-  window.alert('Mobile devices are not supported.')
-}
-</script>
-<script>
-//Get the current date
-var menuToggle = document.getElementById("inner-menu-toggle")
-var today = new Date();
-var dd = today.getDate();
-var mm = today.getMonth()+1;
-
-if(dd<10) {
-    dd = '0'+dd
-} 
-if(mm<10) {
-    mm = '0'+mm
-} 
-today = dd + '/' + mm;
-//Halloween
-if(today == '31/10') {
-  menuToggle.setAttribute('src', 'html/media/pumpkin.png'); 
-}
-//Christmas
-if(mm == '12') {
-  menuToggle.setAttribute('src', 'html/media/snowflake.png'); 
-}
-//New Year
-if(today == '31/12') {
-  menuToggle.setAttribute('src', 'html/media/wine.png'); 
-}
-</script>
-</body>
-
+  </body>
 </html>
