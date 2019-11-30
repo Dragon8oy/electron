@@ -5,7 +5,7 @@
   "keywords": [],
   "main": "./main.js",
   "version": "0.3.8",
-  "license" : "GPL-3.0",
+  "license": "GPL-3.0",
   "homepage": "https://dragon8oy.github.io/electron",
   "author": {
     "name": "dragon8oy",
@@ -40,10 +40,9 @@
       ]
     }
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
-    "electron": "^4.0.5",
-    "electron-builder": "^20.38.5"
+    "electron": "^4.2.12",
+    "electron-builder": "^20.44.4"
   }
 }
