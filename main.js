@@ -59,7 +59,7 @@ ipc.on('open-file', function (event, arg) {
 ipc.on('save-file', function (event, saveData, saveAs) {
   //Run the code to save the edited file
   //Find a place to save it if it has no path
-  if(saveAs == 1) {
+  if(saveAs == 'true') {
     openFile()
     if(filePath == '' || filePath == 'undefined') {} else {
       mainWindow.webContents.send('confirm', 'Are you sure you want to save?\nWarning: This will overwrite the chosen file.')

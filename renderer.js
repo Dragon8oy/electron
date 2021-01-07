@@ -1,10 +1,8 @@
 //File executed by index.html
 const electron = require('electron')
 const ipc = require('electron').ipcRenderer
-var filePath
 var fileContents = 'No file loaded'
 var saveContents = fileContents
-var message
 
 //Tell main.js to open a file
 function openFile() {
@@ -14,7 +12,7 @@ function openFile() {
 //Send contents of file to main.js to be written
 function saveFile(saveAs) {
   saveContents = document.getElementById("workspace").value;
-  if(saveAs == '1') {
+  if(saveAs == 'true') {
     ipc.send('save-file', saveContents, saveAs)
   } else {
     ipc.send('save-file', saveContents)
@@ -43,7 +41,7 @@ function toggleSearch() {
 
 //IPC communications
 ipc.on('open-file', function(event, file, fileCont) {
-  filePath = file
+  let filePath = file
   fileContents = fileCont
   document.getElementById("workspace").value = fileContents;
 })
@@ -55,7 +53,7 @@ ipc.on('menu', function(event, action) {
     saveFile()
   }
   if(action == 'saveas') {
-    saveFile('1')
+    saveFile('true')
   }
   if(action == 'find') {
     toggleSearch()
