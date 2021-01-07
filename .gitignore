@@ -5,9 +5,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Dependency directories
+#Dependency directories
 node_modules/
 jspm_packages/
 
-# Extra files and builds
+#Extra files and builds
+package-lock.json
 dist/
