@@ -109,7 +109,7 @@ const template = [
     submenu: [
       {
         label: 'GitHub',
-        click () { require('electron').shell.openExternal('https://dragon8oy.github.io/mollusc-text-editor') }
+        click () { require('electron').shell.openExternal('https://github.com/Dragon8oy/mollusc-text-editor') }
       }
     ]
   }
