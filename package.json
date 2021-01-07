@@ -6,14 +6,14 @@
   "main": "./main.js",
   "version": "0.3.8",
   "license": "GPL-3.0",
-  "homepage": "https://dragon8oy.github.io/electron",
+  "homepage": "https://github.com/Dragon8oy/mollusc-text-editor",
   "author": {
     "name": "dragon8oy",
     "email": "stuart.a.hayhurst@gmail.com"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/dragon8oy/electron.git"
+    "url": "https://github.com/Dragon8oy/mollusc-text-editor.git"
   },
   "scripts": {
     "start": "electron .",
