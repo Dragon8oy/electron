@@ -40,22 +40,18 @@ function toggleSearch() {
 }
 
 //IPC communications
-ipc.on('open-file', function(event, file, fileCont) {
+ipc.on('open-file', function(event, file, fileContents) {
   let filePath = file
-  fileContents = fileCont
   document.getElementById("workspace").value = fileContents;
 })
 ipc.on('menu', function(event, action) {
   if(action == 'open') {
     openFile()
-  }
-  if(action == 'save') {
+  } else if(action == 'save') {
     saveFile()
-  }
-  if(action == 'saveas') {
+  } else if(action == 'saveas') {
     saveFile('true')
-  }
-  if(action == 'find') {
+  } else if(action == 'find') {
     toggleSearch()
   }
 })
