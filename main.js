@@ -3,7 +3,6 @@ const { app, BrowserWindow, dialog } = require('electron')
 const ipc = require('electron').ipcMain
 const path = require('path');
 const fs = require('fs');
-const validTypes = ['txt','json','js','sh','py','html','php', 'css', 'bat', 'dat', 'csv', 'xml', 'log', 'db', 'pl', 'cgi', 'htm', 'jsp', 'asp', 'aspx', 'xhtml', 'odt', 'doc', 'docx', 'obs', 'pps', 'cpp', 'vb', 'swift', 'h', 'c', 'class', 'ods', 'xls', 'cfg', 'dll', 'lnk', 'ini', 'rtf', 'tex', 'yml', 'yaml', 'ts', 'msi', 'desktop'];
 var filePath = ''
 var publicSaveData
 var saved = 1
