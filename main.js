@@ -85,9 +85,8 @@ ipc.on('confirmLoad', function (event, data) {
   });
 })
 
-ipc.on('changeTitle', function (event, data) {
-  saved = data
-  if(saved == 0) {
+ipc.on('changeTitle', function (event, fileSaveState) {
+  if(fileSaveState == 'unsaved') {
     mainWindow.setTitle('Mollusc Text Editor - Unsaved')
   } else {
     mainWindow.setTitle('Mollusc Text Editor')

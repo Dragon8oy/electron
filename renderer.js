@@ -23,9 +23,9 @@ function saveFile(saveAs) {
 function checkSave() {
   saveContents = document.getElementById("workspace").value;
   if(fileContents == saveContents) {
-    ipc.send('changeTitle', '1')
+    ipc.send('changeTitle', 'saved')
   } else {
-    ipc.send('changeTitle', '0')
+    ipc.send('changeTitle', 'unsaved')
   }
 }
 
