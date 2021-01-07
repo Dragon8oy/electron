@@ -3,7 +3,7 @@ const electron = require('electron')
 const ipc = require('electron').ipcRenderer
 var filePath
 var fileContents = 'No file loaded'
-var saveContents = 'No file loaded'
+var saveContents = fileContents
 var message
 
 //Tell main.js to open a file
