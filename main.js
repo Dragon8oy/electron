@@ -5,8 +5,6 @@ const path = require('path');
 const fs = require('fs');
 const validTypes = ['txt','json','js','sh','py','html','php', 'css', 'bat', 'dat', 'csv', 'xml', 'log', 'db', 'pl', 'cgi', 'htm', 'jsp', 'asp', 'aspx', 'xhtml', 'odt', 'doc', 'docx', 'obs', 'pps', 'cpp', 'vb', 'swift', 'h', 'c', 'class', 'ods', 'xls', 'cfg', 'dll', 'lnk', 'ini', 'rtf', 'tex', 'yml', 'yaml', 'ts', 'msi', 'desktop'];
 var filePath = ''
-var fileType
-var allowFile
 var publicSaveData
 var saved = 1
 
@@ -52,22 +50,10 @@ app.on('ready', () => {
 ipc.on('open-file', function (event, arg) {
   //Run the code to open the file
   openFile()
-  //Get the filetype and check it against an array of allowed files
-  fileType = filePath.substr(filePath.indexOf(".") + 1)
-  allowFile = 0
-  for (i = 0; i < validTypes.length; i++) {
-    if(fileType == validTypes[i]) {
-      allowFile = 1
-    }
-  }
   if(filePath == 'undefined') {} else {
-  if(allowFile == 1) {
     fs.readFile(filePath, function(err, data) {
       mainWindow.webContents.send('open-file', filePath, data);
     });
-  } else {
-      forceLoad('Unsupported filetype.\n Please submit an issue on GitHub if you belive this is an error.\n (Help > GitHub)\n Press OK to load anyway.')
-    }
   }
 })
 
