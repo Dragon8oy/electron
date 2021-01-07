@@ -5,7 +5,7 @@ const path = require('path');
 const fs = require('fs');
 var filePath = ''
 var publicSaveData
-var saved = 1
+var saved = 'true'
 
 let mainWindow
 
@@ -23,14 +23,14 @@ function createWindow () {
     mainWindow = null
   })
   mainWindow.on('close', function(e){
-    if(saved == 0) {
-      var choice = require('electron').dialog.showMessageBox(this, {
+    if(saved == 'false') {
+      var choice = require('electron').dialog.showMessageBoxSync(this, {
         type: 'question',
         buttons: ['Yes', 'No'],
         title: 'Unsaved work',
         message: 'You have unsaved work\n Are you sure you want to exit?'
       });
-      if(choice == 1){
+      if(choice == 1) {
         e.preventDefault();
       }
     }
@@ -88,8 +88,10 @@ ipc.on('confirmLoad', function (event, data) {
 ipc.on('changeTitle', function (event, fileSaveState) {
   if(fileSaveState == 'unsaved') {
     mainWindow.setTitle('Mollusc Text Editor - Unsaved')
+    saved='false'
   } else {
     mainWindow.setTitle('Mollusc Text Editor')
+    saved='true'
   }
 })
 
