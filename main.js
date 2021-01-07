@@ -48,7 +48,7 @@ app.on('ready', () => {
 //IPC communications
 ipc.on('open-file', function (event, arg) {
   //Run the code to open the file
-  openFile()
+  selectFile()
   if(filePath == 'undefined') {} else {
     fs.readFile(filePath, function(err, data) {
       mainWindow.webContents.send('open-file', filePath, data);
@@ -60,14 +60,14 @@ ipc.on('save-file', function (event, saveData, saveAs) {
   //Run the code to save the edited file
   //Find a place to save it if it has no path
   if(saveAs == 'true') {
-    openFile()
+    selectFile()
     if(filePath == '' || filePath == 'undefined') {} else {
       mainWindow.webContents.send('confirm', 'Are you sure you want to save?\nWarning: This will overwrite the chosen file.')
       publicSaveData = saveData
     }
   } else {
     if(filePath == '' || filePath == 'undefined') {
-      openFile()
+      selectFile()
       if(filePath == '' || filePath == 'undefined') {} else {
         mainWindow.webContents.send('confirm', 'Are you sure you want to save?\nWarning: This will overwrite the chosen file.')
         publicSaveData = saveData
@@ -103,10 +103,10 @@ ipc.on('confirm', function (event, data) {
 })
 
 //Selects file and saves the contents
-function openFile() {
+function selectFile() {
   filePath = 'undefined'
   filePath = String(dialog.showOpenDialog({
-    title: 'Open File',
+    title: 'Select File',
     properties: ['openFile']
   }))
 }
