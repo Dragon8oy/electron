@@ -105,7 +105,7 @@ ipc.on('confirm', function (event, data) {
 //Selects file and saves the contents
 function selectFile() {
   filePath='undefined'
-  filePath=String(dialog.showOpenDialog({
+  filePath=String(dialog.showOpenDialogSync({
     title: 'Select File',
     properties: ['openFile']
   }))
