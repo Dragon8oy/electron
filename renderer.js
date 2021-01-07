@@ -6,10 +6,12 @@ var fileContents = 'No file loaded'
 var saveContents = 'No file loaded'
 var message
 
-//Functions
+//Tell main.js to open a file
 function openFile() {
   ipc.send('open-file', '')
 }
+
+//Send contents of file to main.js to be written
 function saveFile(saveAs) {
   saveContents = document.getElementById("workspace").value;
   if(saveAs == '1') {
@@ -18,6 +20,8 @@ function saveFile(saveAs) {
     ipc.send('save-file', saveContents)
   }
 }
+
+//Check whether or not the changes are saved, and tell main.js to change the title accordingly
 function checkSave() {
   saveContents = document.getElementById("workspace").value;
   if(fileContents == saveContents) {
@@ -26,16 +30,18 @@ function checkSave() {
     ipc.send('changeTitle', '0')
   }
 }
+
+//Toggle the search bar
 function toggleSearch() {
-  var x = document.getElementById("searchMenu");
-  if (x.style.display === "none") {
-    x.classList.toggle('fade');
+  var searchBar = document.getElementById("searchMenu");
+  if (searchBar.style.display === "none") {
+    searchBar.classList.toggle('fade');
   } else {
-    x.classList.toggle('fade');
+    searchBar.classList.toggle('fade');
   }
 }
 
-//IPC
+//IPC communications
 ipc.on('open-file', function(event, file, fileCont) {
   filePath = file
   fileContents = fileCont

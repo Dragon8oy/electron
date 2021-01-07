@@ -26,14 +26,14 @@ function createWindow () {
   mainWindow.on('close', function(e){
     if(saved == 0) {
       var choice = require('electron').dialog.showMessageBox(this, {
-            type: 'question',
-            buttons: ['Yes', 'No'],
-            title: 'Unsaved work',
-            message: 'You have unsaved work\n Are you sure you want to exit?'
-         });
-         if(choice == 1){
-           e.preventDefault();
-         }
+        type: 'question',
+        buttons: ['Yes', 'No'],
+        title: 'Unsaved work',
+        message: 'You have unsaved work\n Are you sure you want to exit?'
+      });
+      if(choice == 1){
+        e.preventDefault();
+      }
     }
   });
 }
@@ -77,7 +77,7 @@ ipc.on('save-file', function (event, saveData, saveAs) {
       //Save the file normally
       writeFileData(filePath, saveData)
     }
-}
+  }
 })
 
 ipc.on('confirmLoad', function (event, data) {
