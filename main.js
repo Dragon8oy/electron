@@ -98,14 +98,14 @@ ipc.on('confirm', function (event, data) {
     writeFileData(filePath, publicSaveData)
   }
   if(data == 'dont-overwrite') {
-    filePath = ''
+    filePath=''
   }
 })
 
 //Selects file and saves the contents
 function selectFile() {
-  filePath = 'undefined'
-  filePath = String(dialog.showOpenDialog({
+  filePath='undefined'
+  filePath=String(dialog.showOpenDialog({
     title: 'Select File',
     properties: ['openFile']
   }))
@@ -119,10 +119,10 @@ function writeFileData(path, writeContents) {
   });
 }
 
-function sendMessage (content) {
+function sendMessage(content) {
   mainWindow.webContents.send('messages', content);
 }
 
-function forceLoad (content) {
+function forceLoad(content) {
   mainWindow.webContents.send('forceLoad', content);
 }
