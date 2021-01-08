@@ -6,20 +6,20 @@
     <link href="assets/css/stylesheet.css" rel="stylesheet">
   </head>
   <body>
-    &nbsp<a id="searchMenu" class="searchMenu" ><p style="display: inline-block;" >Search for text:</p>&nbsp<input style="display: inline-block;" id="searchBox" ></input> <button id="searchBtn" class="searchBtn" style="display: inline-block;" onClick="findText('')" >Search</button></a>
-    &nbsp<a class="buttonGroup"><button class="button" onClick="openFile()">Open File</button>
-    <button class="button" onClick="saveFile()">Save File</button></a><br>
-    <br><textarea contenteditable="true" oninput="checkSave()" id="workspace" class="workspace">No file loaded</textarea>
+    &nbsp
+    <a id="searchMenu" class="searchMenu" >
+      <p style="display: inline-block;" >Search for text:</p>&nbsp
+      <input style="display: inline-block;" id="searchBox" ></input>
+      <button id="searchBtn" class="searchBtn" onClick="findText('')" >Search</button>
+    </a>
+    &nbsp
+    <a class="buttonGroup"><button class="button" onClick="openFile()">Open File</button>
+      <button class="button" onClick="saveFile()">Save File</button>
+    </a>
+    <br><br>
+    <textarea contenteditable="true" oninput="checkSave()" id="workspace" class="workspace">No file loaded</textarea>
 
     <script src="./renderer.js"></script>
-    <script>
-      var text
-      function findText(text) {
-        if(window.find(text)) {
-        } else {
-          window.alert('No text found matching the search')
-        }
-      }
-    </script>
+    <script src="assets/js/findText.js"></script>
   </body>
 </html>

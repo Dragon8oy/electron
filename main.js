@@ -42,7 +42,7 @@ app.on('ready', () => {
   createWindow()
   mainWindow.loadFile('index.html')
   //Require the main menu
-  require('./assets/menu.js')
+  require('./assets/js/menu.js')
 })
 
 //IPC communications
