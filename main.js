@@ -14,6 +14,8 @@ function createWindow () {
   mainWindow = new BrowserWindow({
     width: 900,
     height: 1080,
+    backgroundColor: '#3a3a3a',
+    show: false,
     icon: path.join(__dirname, 'assets/img/icon.png'),
     webPreferences: {
       nodeIntegration: true
@@ -34,6 +36,10 @@ function createWindow () {
         e.preventDefault();
       }
     }
+  });
+  mainWindow.on('ready-to-show', function() { 
+    mainWindow.show(); 
+    mainWindow.focus(); 
   });
 }
 
