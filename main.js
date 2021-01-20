@@ -1,5 +1,6 @@
 //Load modules and declare variables
 const { app, BrowserWindow, dialog } = require('electron')
+const windowStateKeeper = require('electron-window-state')
 const ipc = require('electron').ipcMain
 const path = require('path');
 const fs = require('fs');
@@ -11,9 +12,16 @@ let mainWindow
 
 //Properties of the main window
 function createWindow () {
+  let mainWindowState = windowStateKeeper({
+    defaultWidth: 400,
+    defaultHeight: 400
+  });
+
   mainWindow = new BrowserWindow({
-    width: 900,
-    height: 1080,
+    'x': mainWindowState.x,
+    'y': mainWindowState.y,
+    'width': mainWindowState.width,
+    'height': mainWindowState.height,
     backgroundColor: '#3a3a3a',
     show: false,
     icon: path.join(__dirname, 'assets/img/icon.png'),
@@ -21,9 +29,11 @@ function createWindow () {
       nodeIntegration: true
     }
   })
+
   mainWindow.on('closed', function () {
     mainWindow = null
   })
+
   mainWindow.on('close', function(e){
     if(saved == 'false') {
       var choice = require('electron').dialog.showMessageBoxSync(this, {
@@ -37,10 +47,13 @@ function createWindow () {
       }
     }
   });
+
   mainWindow.on('ready-to-show', function() { 
     mainWindow.show(); 
     mainWindow.focus(); 
   });
+
+  mainWindowState.manage(mainWindow);
 }
 
 //Create the window
