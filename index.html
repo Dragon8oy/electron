@@ -6,17 +6,15 @@
     <link href="assets/css/stylesheet.css" rel="stylesheet">
   </head>
   <body>
-    &nbsp
     <a id="searchMenu" class="searchMenu" >
-      <p style="display: inline-block;" >Search for text:</p>&nbsp
+      <p style="display: inline-block;" >Search for text:</p>
       <input style="display: inline-block;" id="searchBox" ></input>
-      <button id="searchBtn" class="searchBtn" onClick="searchText('')" >Search</button>
+      <button id="searchButton" class="button search-button" onClick="searchText('')" >Search</button>
     </a>
-    &nbsp
-    <a class="buttonGroup"><button class="button" onClick="openFile()">Open File</button>
+    <div class="buttonGroup">
+      <button class="button" onClick="openFile()">Open File</button>
       <button class="button" onClick="saveFile()">Save File</button>
-    </a>
-    <br><br>
+    </div>
     <textarea contenteditable="true" oninput="checkSave()" id="workspace" class="workspace">No file loaded</textarea>
 
     <script src="./renderer.js"></script>
