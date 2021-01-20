@@ -5,6 +5,8 @@ body, html {
   color: white;
 }
 
+.ui-text { -webkit-user-select:none; }
+
 .workspace {
   border: 4px solid #545050;
   background-color: #303030;
