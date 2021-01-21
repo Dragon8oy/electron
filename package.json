@@ -26,14 +26,16 @@
       "**/*",
       "assets/css/stylesheet.css",
       "assets/img/*",
-      "assets/js/*"
+      "assets/js/*",
+      "build/icons/*",
+      "build/icon.*"
     ],
+    "icon": "512x512",
     "win": {
-      "target": "NSIS",
-      "icon": "build/icon.ico"
+      "target": "NSIS"
     },
     "linux": {
-      "icon": "build/icons/512x512.png",
+      "category": "Utility",
       "target": [
         "AppImage",
         "deb"

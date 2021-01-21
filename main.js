@@ -24,7 +24,7 @@ function createWindow () {
     'height': mainWindowState.height,
     backgroundColor: '#3a3a3a',
     show: false,
-    icon: path.join(__dirname, 'assets/img/icon.png'),
+    icon: path.join(__dirname, 'build/icon.png'),
     webPreferences: {
       nodeIntegration: true
     }
