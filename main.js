@@ -104,15 +104,35 @@ ipc.on('confirmLoad', function (event, data) {
   });
 })
 
-ipc.on('changeTitle', function (event, fileSaveState) {
+ipc.on('updateSaveState', function (event, fileSaveState) {
   if(fileSaveState == 'unsaved') {
-    mainWindow.setTitle('Mollusc Text Editor - Unsaved')
     saved='false'
   } else {
-    mainWindow.setTitle('Mollusc Text Editor')
     saved='true'
   }
+  updateTitle(saved)
 })
+
+ipc.on('updateTitle', function (event, fileSaveState) {
+  updateTitle(saved)
+})
+
+function updateTitle(fileSaved) {
+  let title
+
+  //If a file has been opened, use it for the title
+  if(filePath != '' && filePath != 'undefined') {
+    title=filePath
+  } else {
+    title='Mollusc Text Editor'
+  }
+
+  //Append " - Unsaved" to title if the file is unsaved
+  if(fileSaved == 'false') {
+    title+=' - Unsaved'
+  }
+  mainWindow.setTitle(title)
+}
 
 ipc.on('confirm', function (event, data) {
   if(data == 'overwrite') {
