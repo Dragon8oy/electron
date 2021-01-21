@@ -135,7 +135,6 @@ function selectFile() {
 function writeFileData(path, writeContents) {
   fs.writeFile(path, writeContents, function (err) {
     if(err) throw err;
-    sendMessage('File saved successfully')
     mainWindow.webContents.send('update-contents', '')
   });
 }
