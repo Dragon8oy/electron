@@ -31,12 +31,7 @@ function checkSave() {
 
 //Toggle the search bar
 function toggleSearch() {
-  var searchBar = document.getElementById("searchMenu");
-  if (searchBar.style.display === "none") {
-    searchBar.classList.toggle('fade');
-  } else {
-    searchBar.classList.toggle('fade');
-  }
+  document.getElementById("searchMenu").classList.toggle('fade');
 }
 
 //IPC communications
