@@ -9,6 +9,11 @@ function openFile() {
   ipc.send('open-file', '')
 }
 
+//Tell main.js to update the title
+function updateTitle() {
+  ipc.send('updateTitle')
+}
+
 //Send contents of file to main.js to be written
 function saveFile(saveAs) {
   saveContents = document.getElementById("workspace").value;
@@ -19,13 +24,13 @@ function saveFile(saveAs) {
   }
 }
 
-//Check whether or not the changes are saved, and tell main.js to change the title accordingly
+//Check whether or not the changes are saved, and tell main.js to change the state accordingly
 function checkSave() {
   saveContents = document.getElementById("workspace").value;
   if(fileContents == saveContents) {
-    ipc.send('changeTitle', 'saved')
+    ipc.send('updateSaveState', 'saved')
   } else {
-    ipc.send('changeTitle', 'unsaved')
+    ipc.send('updateSaveState', 'unsaved')
   }
 }
 
@@ -35,10 +40,14 @@ function toggleSearch() {
 }
 
 //IPC communications
+
+//Load contents of a file
 ipc.on('open-file', function(event, file, fileContents) {
-  let filePath = file
   document.getElementById("workspace").value = fileContents;
+  updateTitle()
 })
+
+//Handle events from menu.js -> main.js -> renderer.js
 ipc.on('menu', function(event, action) {
   if(action == 'open') {
     openFile()
@@ -48,15 +57,24 @@ ipc.on('menu', function(event, action) {
     saveFile('true')
   } else if(action == 'find') {
     toggleSearch()
+  } else if(action == 'undo' || action == 'redo') {
+    checkSave()
+    updateTitle()
   }
 })
+
+//Display messages sent from main.js
 ipc.on('messages', function(event, message) {
   window.alert(message)
 })
+
+//Refresh cached content of a file
 ipc.on('update-contents', function(event) {
   fileContents = document.getElementById("workspace").value;
   checkSave()
 })
+
+//Confirm whether to overwrite a file
 ipc.on('confirm', function(event, message, url) {
   if (window.confirm(message)) {
     ipc.send('confirm', 'overwrite')
