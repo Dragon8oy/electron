@@ -39,7 +39,7 @@ function createWindow () {
         type: 'question',
         buttons: ['Yes', 'No'],
         title: 'Unsaved work',
-        message: 'You have unsaved work\n Are you sure you want to exit?'
+        message: 'You have unsaved work\nAre you sure you want to exit?'
       });
       if(choice == 1) {
         e.preventDefault();
