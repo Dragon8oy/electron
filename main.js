@@ -107,11 +107,10 @@ ipc.on('updateTitle', function (event, fileSaveState) {
 })
 
 function updateTitle(fileSaved) {
-  let title
-
   //If a file has been opened, use it for the title
+  let title
   if(filePath != '' && filePath != 'undefined') {
-    title=filePath
+    title=path.basename(filePath)
   } else {
     title='Mollusc Text Editor'
   }
