@@ -10,7 +10,14 @@ function openFile() {
 
 //Tell main.js to update the title
 function updateTitle() {
+  checkSave()
   ipc.send('updateTitle')
+}
+
+//Update the last saved contents and title
+function updateContents() {
+  fileContents = document.getElementById("workspace").value;
+  updateTitle()
 }
 
 //Send contents of file to main.js to be written
@@ -43,7 +50,7 @@ function toggleSearch() {
 //Load contents of a file
 ipc.on('open-file', function(event, file, fileContents) {
   document.getElementById("workspace").value = fileContents;
-  updateTitle()
+  updateContents()
 })
 
 //Handle events from menu.js -> main.js -> renderer.js
@@ -57,7 +64,6 @@ ipc.on('menu', function(event, action) {
   } else if(action == 'find') {
     toggleSearch()
   } else if(action == 'undo' || action == 'redo') {
-    checkSave()
     updateTitle()
   }
 })
@@ -69,6 +75,5 @@ ipc.on('messages', function(event, message) {
 
 //Update fileContents to file after it's been saved
 ipc.on('update-contents', function(event) {
-  fileContents = document.getElementById("workspace").value;
-  checkSave()
+  updateContents()
 })
