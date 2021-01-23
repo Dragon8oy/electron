@@ -2,7 +2,6 @@
 const electron = require('electron')
 const ipc = require('electron').ipcRenderer
 var fileContents = 'No file loaded'
-var saveContents = fileContents
 
 //Tell main.js to open a file
 function openFile() {
@@ -16,7 +15,7 @@ function updateTitle() {
 
 //Send contents of file to main.js to be written
 function saveFile(saveAs) {
-  saveContents = document.getElementById("workspace").value;
+  let saveContents = document.getElementById("workspace").value;
   if(saveAs == 'true') {
     ipc.send('save-file', saveContents, saveAs)
   } else {
@@ -26,7 +25,7 @@ function saveFile(saveAs) {
 
 //Check whether or not the changes are saved, and tell main.js to change the state accordingly
 function checkSave() {
-  saveContents = document.getElementById("workspace").value;
+  let saveContents = document.getElementById("workspace").value;
   if(fileContents == saveContents) {
     ipc.send('updateSaveState', 'saved')
   } else {
@@ -68,7 +67,7 @@ ipc.on('messages', function(event, message) {
   window.alert(message)
 })
 
-//Refresh cached content of a file
+//Update fileContents to file after it's been saved
 ipc.on('update-contents', function(event) {
   fileContents = document.getElementById("workspace").value;
   checkSave()
