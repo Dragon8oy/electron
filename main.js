@@ -5,7 +5,6 @@ const ipc = require('electron').ipcMain
 const path = require('path');
 const fs = require('fs');
 var filePath = ''
-var publicSaveData
 var saved = 'true'
 
 let mainWindow
@@ -67,7 +66,7 @@ app.on('ready', () => {
 //IPC communications
 ipc.on('open-file', function (event, arg) {
   //Run the code to open the file
-  selectFile()
+  selectFile('open')
   if(filePath == 'undefined') {} else {
     fs.readFile(filePath, function(err, data) {
       mainWindow.webContents.send('open-file', filePath, data);
@@ -76,26 +75,16 @@ ipc.on('open-file', function (event, arg) {
 })
 
 ipc.on('save-file', function (event, saveData, saveAs) {
-  //Run the code to save the edited file
-  //Find a place to save it if it has no path
-  if(saveAs == 'true') {
-    selectFile()
-    if(filePath == '' || filePath == 'undefined') {} else {
-      mainWindow.webContents.send('confirm', 'Are you sure you want to save?\nWarning: This will overwrite the chosen file.')
-      publicSaveData = saveData
-    }
-  } else {
-    if(filePath == '' || filePath == 'undefined') {
-      selectFile()
-      if(filePath == '' || filePath == 'undefined') {} else {
-        mainWindow.webContents.send('confirm', 'Are you sure you want to save?\nWarning: This will overwrite the chosen file.')
-        publicSaveData = saveData
-      }
-    } else {
-      //Save the file normally
-      writeFileData(filePath, saveData)
-    }
+  //If no file is chosen, or we're choosing a file, show the a dialogue
+  if(filePath == '' || filePath == 'undefined' || saveAs == 'true') {
+   selectFile('save')
+     //If no file was selected, cancel
+     if(filePath == '' || filePath == 'undefined') {
+       return
+     }
   }
+  //Save the file
+  writeFileData(filePath, saveData)
 })
 
 ipc.on('confirmLoad', function (event, data) {
@@ -134,22 +123,20 @@ function updateTitle(fileSaved) {
   mainWindow.setTitle(title)
 }
 
-ipc.on('confirm', function (event, data) {
-  if(data == 'overwrite') {
-    writeFileData(filePath, publicSaveData)
-  }
-  if(data == 'dont-overwrite') {
-    filePath=''
-  }
-})
-
 //Selects file and saves the contents
-function selectFile() {
+function selectFile(dialogType) {
   filePath='undefined'
-  filePath=String(dialog.showOpenDialogSync({
-    title: 'Select File',
-    properties: ['openFile']
-  }))
+  if(dialogType == 'open')
+    filePath=String(dialog.showOpenDialogSync({
+      title: 'Open File',
+      properties: ['openFile']
+    }))
+  else {
+    filePath=String(dialog.showSaveDialogSync({
+      title: 'Save File',
+      properties: ['showOverwriteConfirmation']
+    }))
+  }
 }
 
 function writeFileData(path, writeContents) {
@@ -161,8 +148,4 @@ function writeFileData(path, writeContents) {
 
 function sendMessage(content) {
   mainWindow.webContents.send('messages', content);
-}
-
-function forceLoad(content) {
-  mainWindow.webContents.send('forceLoad', content);
 }

@@ -72,17 +72,3 @@ ipc.on('update-contents', function(event) {
   fileContents = document.getElementById("workspace").value;
   checkSave()
 })
-
-//Confirm whether to overwrite a file
-ipc.on('confirm', function(event, message, url) {
-  if (window.confirm(message)) {
-    ipc.send('confirm', 'overwrite')
-  } else {
-    ipc.send('confirm', 'dont-overwrite')
-  }
-})
-ipc.on('forceLoad', function(event, message) {
-  if (window.confirm(message)) {
-    ipc.send('confirmLoad', '')
-  };
-})
