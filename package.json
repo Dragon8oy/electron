@@ -30,7 +30,7 @@
       "build/icons/*",
       "build/icon.*"
     ],
-    "icon": "512x512",
+    "icon": "256x256",
     "win": {
       "target": "NSIS"
     },
