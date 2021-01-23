@@ -4,8 +4,8 @@ const ipc = require('electron').ipcRenderer
 var fileContents = 'No file loaded'
 
 //Tell main.js to open a file
-function openFile() {
-  ipc.send('open-file', '')
+function openFile(override) {
+  ipc.send('open-file', override)
 }
 
 //Tell main.js to update the title
@@ -47,8 +47,20 @@ function toggleSearch() {
 
 //IPC communications
 
-//Load contents of a file
+//Load contents of a file, or confirm the user wants to open a fle
 ipc.on('open-file', function(event, file, fileContents) {
+  //Confirm the user wants to load a file if it'll cause unsaved work to be lost
+  if(file == 'confirm') {
+    //Send the confirm box
+    if(window.confirm(fileContents)) {
+      //Open a file and ignore unsaved work
+      openFile('true')
+    }
+    //Exit early
+    return
+  }
+
+  //Load the file's contents
   document.getElementById("workspace").value = fileContents;
   updateContents()
 })
@@ -56,7 +68,7 @@ ipc.on('open-file', function(event, file, fileContents) {
 //Handle events from menu.js -> main.js -> renderer.js
 ipc.on('menu', function(event, action) {
   if(action == 'open') {
-    openFile()
+    openFile('false')
   } else if(action == 'save') {
     saveFile()
   } else if(action == 'saveas') {

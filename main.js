@@ -64,9 +64,18 @@ app.on('ready', () => {
 })
 
 //IPC communications
-ipc.on('open-file', function (event, arg) {
-  //Run the code to open the file
+ipc.on('open-file', function (event, override) {
+  //Confirm the user wants to open a new file with unsaved work
+  if(saved == 'false' && override == 'false') {
+    //Resuse existing communications, sending 'confirm' instead of file, and a message instead of fileContents
+    mainWindow.webContents.send('open-file', 'confirm', 'You have unsaved changes\nAre you sure you want to open a new file?')
+    return
+  }
+
+  //Select a file
   selectFile('open')
+
+  //If a file was selected, send the contents to be loaded
   if(filePath == 'undefined') {} else {
     fs.readFile(filePath, function(err, data) {
       mainWindow.webContents.send('open-file', filePath, data);
