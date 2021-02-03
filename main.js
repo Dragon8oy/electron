@@ -77,7 +77,7 @@ ipc.on('open-file', function (event, override) {
 
   //If a file was selected, send the contents to be loaded
   if(filePath == 'undefined') {} else {
-    fs.readFile(filePath, function(err, data) {
+    fs.readFile(filePath, 'utf-8', (err, data) => {
       mainWindow.webContents.send('open-file', filePath, data);
     });
   }
@@ -97,7 +97,7 @@ ipc.on('save-file', function (event, saveData, saveAs) {
 })
 
 ipc.on('confirmLoad', function (event, data) {
-  fs.readFile(filePath, function(err, data) {
+  fs.readFile(filePath, 'utf-8', (err, data) => {
     mainWindow.webContents.send('open-file', filePath, data);
   });
 })
