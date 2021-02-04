@@ -1,5 +1,4 @@
 //File executed by index.html
-const electron = require('electron')
 const ipc = require('electron').ipcRenderer
 var fileContents = 'No file loaded'
 

@@ -25,6 +25,7 @@ function createWindow () {
     show: false,
     icon: path.join(__dirname, 'build/icon.png'),
     webPreferences: {
+      contextIsolation: false,
       nodeIntegration: true
     }
   })
@@ -35,7 +36,7 @@ function createWindow () {
 
   mainWindow.on('close', function(e){
     if(saved == 'false') {
-      var choice = require('electron').dialog.showMessageBoxSync(this, {
+      var choice = dialog.showMessageBoxSync(this, {
         type: 'question',
         buttons: ['Yes', 'No'],
         title: 'Unsaved work',
@@ -53,6 +54,7 @@ function createWindow () {
   });
 
   mainWindowState.manage(mainWindow);
+  mainWindow.webContents.openDevTools();
 }
 
 //Create the window
