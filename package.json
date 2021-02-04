@@ -52,7 +52,7 @@
     "path": "^0.12.7"
   },
   "devDependencies": {
-    "electron": "^11.2.1",
+    "electron": "^11.2.2",
     "electron-builder": "^22.9.1"
   }
 }
