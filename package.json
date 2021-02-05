@@ -28,8 +28,7 @@
   "build": {
     "files": [
       "**/*",
-      "assets/css/stylesheet.css",
-      "assets/img/*",
+      "assets/css/*",
       "assets/js/*",
       "build/icons/*",
       "build/icon.*"
