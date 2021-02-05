@@ -78,9 +78,7 @@ ipc.on('open-file', function (event, override) {
 
   //If a file was selected, send the contents to be loaded
   if(filePath == 'undefined') {} else {
-    fs.readFile(filePath, 'utf-8', (err, data) => {
-      mainWindow.webContents.send('open-file', filePath, data);
-    });
+    readFileData(filePath)
   }
 })
 
@@ -98,9 +96,7 @@ ipc.on('save-file', function (event, saveData, saveAs) {
 })
 
 ipc.on('confirmLoad', function (event, data) {
-  fs.readFile(filePath, 'utf-8', (err, data) => {
-    mainWindow.webContents.send('open-file', filePath, data);
-  });
+  readFileData(filePath)
 })
 
 ipc.on('updateSaveState', function (event, fileSaveState) {
@@ -151,8 +147,18 @@ function selectFile(dialogType) {
   }
 }
 
+//Handle reading file data and sending to renderer
+function readFileData(file) {
+  fs.readFile(file, 'utf-8', (err, data) => {
+    if(err) throw err;
+    //Prompt renderer to load the file
+    mainWindow.webContents.send('open-file', file, data);
+  });
+}
+
+//Handle saving the file
 function writeFileData(path, writeContents) {
-  fs.writeFile(path, writeContents, function (err) {
+  fs.writeFile(path, writeContents, (err) => {
     if(err) throw err;
     //Prompt renderer to update to the latest save state
     mainWindow.webContents.send('update-contents', '')
