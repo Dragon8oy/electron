@@ -54,7 +54,6 @@ function createWindow () {
   });
 
   mainWindowState.manage(mainWindow);
-  mainWindow.webContents.openDevTools();
 }
 
 //Create the window
@@ -117,6 +116,9 @@ ipc.on('updateTitle', function (event, fileSaveState) {
   updateTitle(saved)
 })
 
+//Function declarations
+
+//Update the title based off of open file and save state
 function updateTitle(fileSaved) {
   //If a file has been opened, use it for the title
   let title
@@ -133,7 +135,7 @@ function updateTitle(fileSaved) {
   mainWindow.setTitle(title)
 }
 
-//Selects file and saves the contents
+//Open a dialog to select a file
 function selectFile(dialogType) {
   filePath='undefined'
   if(dialogType == 'open')
@@ -152,10 +154,12 @@ function selectFile(dialogType) {
 function writeFileData(path, writeContents) {
   fs.writeFile(path, writeContents, function (err) {
     if(err) throw err;
+    //Prompt renderer to update to the latest save state
     mainWindow.webContents.send('update-contents', '')
   });
 }
 
+//Display a message graphically
 function sendMessage(content) {
   mainWindow.webContents.send('messages', content);
 }
