@@ -27,7 +27,8 @@
   },
   "build": {
     "files": [
-      "**/*",
+      "main.js",
+      "index.html",
       "assets/css/*",
       "assets/js/*",
       "build/icons/*",
