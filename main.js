@@ -4,13 +4,12 @@ const windowStateKeeper = require('electron-window-state')
 const ipc = require('electron').ipcMain
 const path = require('path');
 const fs = require('fs');
-var filePath = ''
-var saved = 'true'
-
+let filePath = 'undefined'
+let saved = 'true'
 let mainWindow
 
 //Properties of the main window
-function createWindow () {
+function createWindow() {
   let mainWindowState = windowStateKeeper({
     defaultWidth: 400,
     defaultHeight: 400
@@ -30,25 +29,23 @@ function createWindow () {
     }
   })
 
-  mainWindow.on('closed', function () {
-    mainWindow = null
-  })
+  mainWindow.on('closed', () => { mainWindow = null })
 
-  mainWindow.on('close', function(e){
+  mainWindow.on('close', (event) => {
     if(saved == 'false') {
-      var choice = dialog.showMessageBoxSync(this, {
+      let choice = dialog.showMessageBoxSync(mainWindow, {
         type: 'question',
         buttons: ['Yes', 'No'],
         title: 'Unsaved work',
         message: 'You have unsaved work\nAre you sure you want to exit?'
       });
       if(choice == 1) {
-        e.preventDefault();
+        event.preventDefault();
       }
     }
   });
 
-  mainWindow.on('ready-to-show', function() { 
+  mainWindow.on('ready-to-show', () => {
     mainWindow.show(); 
     mainWindow.focus(); 
   });
@@ -65,10 +62,12 @@ app.on('ready', () => {
 })
 
 //IPC communications
-ipc.on('open-file', function (event, override) {
+
+//Open a file when requested
+ipc.on('open-file', (event, override) => {
   //Confirm the user wants to open a new file with unsaved work
   if(saved == 'false' && override == 'false') {
-    //Resuse existing communications, sending 'confirm' instead of file, and a message instead of fileContents
+    //Reuse existing communications, sending 'confirm' instead of file, and a message instead of fileContents
     mainWindow.webContents.send('open-file', 'confirm', 'You have unsaved changes\nAre you sure you want to open a new file?')
     return
   }
@@ -82,12 +81,13 @@ ipc.on('open-file', function (event, override) {
   }
 })
 
-ipc.on('save-file', function (event, saveData, saveAs) {
+//Save the file when requested
+ipc.on('save-file', (event, saveData, saveAs) => {
   //If no file is chosen, or we're choosing a file, show the a dialogue
-  if(filePath == '' || filePath == 'undefined' || saveAs == 'true') {
+  if(filePath == 'undefined' || saveAs == 'true') {
    selectFile('save')
      //If no file was selected, cancel
-     if(filePath == '' || filePath == 'undefined') {
+     if(filePath == 'undefined') {
        return
      }
   }
@@ -95,11 +95,8 @@ ipc.on('save-file', function (event, saveData, saveAs) {
   writeFileData(filePath, saveData)
 })
 
-ipc.on('confirmLoad', function (event, data) {
-  readFileData(filePath)
-})
-
-ipc.on('updateSaveState', function (event, fileSaveState) {
+//Update the savestate of the file and title when requested
+ipc.on('update-save-state', (event, fileSaveState) => {
   if(fileSaveState == 'unsaved') {
     saved='false'
   } else {
@@ -108,7 +105,8 @@ ipc.on('updateSaveState', function (event, fileSaveState) {
   updateTitle(saved)
 })
 
-ipc.on('updateTitle', function (event, fileSaveState) {
+//Update the title when requested
+ipc.on('update-title', (event, fileSaveState) => {
   updateTitle(saved)
 })
 
@@ -118,7 +116,7 @@ ipc.on('updateTitle', function (event, fileSaveState) {
 function updateTitle(fileSaved) {
   //If a file has been opened, use it for the title
   let title
-  if(filePath != '' && filePath != 'undefined') {
+  if(filePath != 'undefined') {
     title=path.basename(filePath)
   } else {
     title='Mollusc Text Editor'

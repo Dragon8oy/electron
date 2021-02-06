@@ -10,7 +10,7 @@ function openFile(override) {
 //Tell main.js to update the title
 function updateTitle() {
   checkSave()
-  ipc.send('updateTitle')
+  ipc.send('update-title')
 }
 
 //Update the last saved contents and title
@@ -22,20 +22,16 @@ function updateContents() {
 //Send contents of file to main.js to be written
 function saveFile(saveAs) {
   let saveContents = document.getElementById("workspace").value;
-  if(saveAs == 'true') {
-    ipc.send('save-file', saveContents, saveAs)
-  } else {
-    ipc.send('save-file', saveContents)
-  }
+  ipc.send('save-file', saveContents, saveAs)
 }
 
 //Check whether or not the changes are saved, and tell main.js to change the state accordingly
 function checkSave() {
   let saveContents = document.getElementById("workspace").value;
   if(fileContents == saveContents) {
-    ipc.send('updateSaveState', 'saved')
+    ipc.send('update-save-state', 'saved')
   } else {
-    ipc.send('updateSaveState', 'unsaved')
+    ipc.send('update-save-state', 'unsaved')
   }
 }
 
@@ -47,7 +43,7 @@ function toggleSearch() {
 //IPC communications
 
 //Load contents of a file, or confirm the user wants to open a fle
-ipc.on('open-file', function(event, file, fileContents) {
+ipc.on('open-file', (event, file, fileContents) => {
   //Confirm the user wants to load a file if it'll cause unsaved work to be lost
   if(file == 'confirm') {
     //Send the confirm box
@@ -65,11 +61,11 @@ ipc.on('open-file', function(event, file, fileContents) {
 })
 
 //Handle events from menu.js -> main.js -> renderer.js
-ipc.on('menu', function(event, action) {
+ipc.on('menu', (event, action) => {
   if(action == 'open') {
     openFile('false')
   } else if(action == 'save') {
-    saveFile()
+    saveFile('false')
   } else if(action == 'saveas') {
     saveFile('true')
   } else if(action == 'find') {
@@ -80,11 +76,11 @@ ipc.on('menu', function(event, action) {
 })
 
 //Display messages sent from main.js
-ipc.on('messages', function(event, message) {
+ipc.on('messages', (event, message) => {
   window.alert(message)
 })
 
 //Update fileContents to file after it's been saved
-ipc.on('update-contents', function(event) {
+ipc.on('update-contents', (event) => {
   updateContents()
 })
