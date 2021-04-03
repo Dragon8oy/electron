@@ -10,14 +10,14 @@
   "main": "./main.js",
   "version": "0.6.1",
   "license": "GPL-3.0",
-  "homepage": "https://github.com/Dragon8oy/mollusc-text-editor",
+  "homepage": "https://github.com/stuarthayhurst/mollusc-text-editor",
   "author": {
     "name": "Stuart Hayhurst",
     "email": "stuart.a.hayhurst@gmail.com"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Dragon8oy/mollusc-text-editor.git"
+    "url": "https://github.com/stuarthayhurst/mollusc-text-editor.git"
   },
   "scripts": {
     "start": "electron .",

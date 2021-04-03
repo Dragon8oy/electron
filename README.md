@@ -5,13 +5,13 @@
  - This project is largely unmaintained, and is only occasionally updated for security patches, but maybe I'll revisit it one day?
 
 ## Installing: (Source)
- - `git clone https://github.com/Dragon8oy/mollusc-text-editor.git`
+ - `git clone https://github.com/stuarthayhurst/mollusc-text-editor.git`
  - `cd mollusc-text-editor`
  - `npm install`
  - Follow the steps in the next section, skipping the download step
 
 ## Installing: (Package)
- - Download the package from [Releases](https://github.com/Dragon8oy/mollusc-text-editor/releases)
+ - Download the package from [Releases](https://github.com/stuarthayhurst/mollusc-text-editor/releases)
  - Install the `.deb` with `sudo apt install ./[Downloaded-package.deb]`
  - Or, run the AppImage for a self-contained solution
 
